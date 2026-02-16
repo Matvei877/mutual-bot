@@ -106,7 +106,7 @@ def get_paginated_kb(tasks, page, total_count, per_page, mode="earn", task_type=
 
             rows.append([
                 InlineKeyboardButton(
-                    text=f"{icon} {title} | +{price:.0f} {CURRENCY_NAME}", 
+                    text=f"{title} | {icon} {price:.0f} {CURRENCY_NAME}",
                     url=link 
                 ),
                 InlineKeyboardButton(
