@@ -54,7 +54,8 @@ def get_earn_menu_kb():
         [InlineKeyboardButton(text="👥 Вступить в группу", callback_data="earn_group")],
         [InlineKeyboardButton(text="🤖 Запустить бота", callback_data="earn_bot")],
         [InlineKeyboardButton(text="👁️ Смотреть посты", callback_data="earn_view")],
-        [InlineKeyboardButton(text="❤️ Ставить реакции", callback_data="earn_reaction")]
+        [InlineKeyboardButton(text="❤️ Ставить реакции", callback_data="earn_reaction")],
+        [InlineKeyboardButton(text="🔙 Вернуться", callback_data="back_to_start")]
     ])
 
 def get_back_to_earn_menu_kb():
