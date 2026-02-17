@@ -2,7 +2,8 @@ import asyncio
 import logging
 from aiogram import Bot
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from database import db_pool, db_apply_penalty
+import database  # <--- Импортируем весь модуль, чтобы видеть обновления переменной
+from database import db_apply_penalty
 from config import UNSUB_CHECK_DAYS, CURRENCY_NAME
 
 logger = logging.getLogger(__name__)
@@ -15,8 +16,8 @@ async def monitor_unsubscribes(bot: Bot):
         try:
             await asyncio.sleep(25) 
             
-            # Проверяем, что пул БД инициализирован
-            if db_pool is None:
+            # ВАЖНО: Обращаемся через модуль database.db_pool
+            if database.db_pool is None:
                 logger.warning("DB pool not initialized yet, waiting...")
                 await asyncio.sleep(10)
                 continue
@@ -31,7 +32,8 @@ async def monitor_unsubscribes(bot: Bot):
                     AND t.task_type NOT IN ('view', 'reaction', 'bot')
                 '''
 
-            async with db_pool.acquire() as conn:
+            # ВАЖНО: Обращаемся через модуль database.db_pool
+            async with database.db_pool.acquire() as conn:
                 recent_subs = await conn.fetch(query)
             
             for sub in recent_subs:
@@ -78,4 +80,3 @@ async def monitor_unsubscribes(bot: Bot):
         except Exception as e:
             logger.error(f"Global monitor error: {e}")
             await asyncio.sleep(60)
-

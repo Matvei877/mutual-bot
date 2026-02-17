@@ -2,7 +2,8 @@ import asyncio
 import logging
 from aiogram import Bot, Dispatcher
 from config import TOKEN
-from database import init_db, db_pool
+import database # <--- Импортируем модуль целиком
+from database import init_db
 from monitoring import monitor_unsubscribes
 
 # Импортируем все обработчики
@@ -42,7 +43,9 @@ async def main():
         await dp.start_polling(bot)
     finally:
         await bot.session.close()
-        if db_pool: await db_pool.close()
+        # ВАЖНО: Используем database.db_pool для проверки и закрытия
+        if database.db_pool: 
+            await database.db_pool.close()
 
 if __name__ == "__main__":
     asyncio.run(main())

@@ -107,7 +107,8 @@ def get_paginated_kb(tasks, page, total_count, per_page, mode="earn", task_type=
 
             rows.append([
                 InlineKeyboardButton(
-                    text=f"{title} | {icon} {price:.0f} {CURRENCY_NAME}",
+                    # ИЗМЕНЕНО ЗДЕСЬ: Сначала цена, потом название
+                    text=f"{icon} {price:.0f} {CURRENCY_NAME} | {title}",
                     url=link 
                 ),
                 InlineKeyboardButton(
@@ -167,4 +168,3 @@ def get_paginated_kb(tasks, page, total_count, per_page, mode="earn", task_type=
         builder.inline_keyboard.append([InlineKeyboardButton(text="🔙 Назад", callback_data="main_menu_return")])
 
     return builder
-

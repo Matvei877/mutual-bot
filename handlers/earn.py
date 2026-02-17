@@ -1,9 +1,11 @@
 import logging
 from aiogram import Bot, Dispatcher, F, types
 from aiogram.fsm.context import FSMContext
+import database  # <--- Импортируем модуль целиком
 from database import (
     db_get_available_counts, db_get_tasks_paginated, 
-    db_complete_task_immediate, db_pool, db_create_review, db_get_review, db_delete_review
+    db_complete_task_immediate, db_create_review, db_get_review, db_delete_review
+    # db_pool УБРАЛИ ОТСЮДА
 )
 from keyboards import (
     get_earn_menu_kb, get_back_to_earn_menu_kb, get_paginated_kb, 
@@ -104,7 +106,8 @@ def register_earn_handlers(dp: Dispatcher, bot: Bot):
         current_page = int(parts[2]) if len(parts) > 2 else 1
         task_type = parts[3] if len(parts) > 3 else "channel"
         
-        async with db_pool.acquire() as conn:
+        # ИСПРАВЛЕНИЕ: используем database.db_pool
+        async with database.db_pool.acquire() as conn:
             task_data = await conn.fetchrow("SELECT channel_link, price_per_sub, channel_title FROM tasks WHERE id=$1", task_id)
         
         if not task_data:
@@ -179,7 +182,8 @@ def register_earn_handlers(dp: Dispatcher, bot: Bot):
             
         user_id = message.from_user.id
         
-        async with db_pool.acquire() as conn:
+        # ИСПРАВЛЕНИЕ: используем database.db_pool
+        async with database.db_pool.acquire() as conn:
             task_data = await conn.fetchrow("SELECT owner_id, task_type FROM tasks WHERE id=$1", task_id)
         
         if not task_data:
@@ -231,7 +235,8 @@ def register_earn_handlers(dp: Dispatcher, bot: Bot):
         from database import db_refund_penalty
         task_id = int(callback.data.split("_")[1])
         
-        async with db_pool.acquire() as conn:
+        # ИСПРАВЛЕНИЕ: используем database.db_pool
+        async with database.db_pool.acquire() as conn:
             task = await conn.fetchrow(
                 "SELECT channel_link, price_per_sub FROM tasks WHERE id=$1", 
                 task_id
@@ -265,4 +270,3 @@ def register_earn_handlers(dp: Dispatcher, bot: Bot):
         except Exception as e:
             logger.error(f"Restore error: {e}")
             await callback.answer("❌ Ошибка проверки. Убедитесь, что бот админ в канале.", show_alert=True)
-
