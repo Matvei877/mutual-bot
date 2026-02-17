@@ -325,6 +325,7 @@ async def db_complete_task_immediate(user_id, task_id):
 
 async def db_apply_penalty(user_id, task_id, penalty_amount, channel_title):
     try:
+        # 1. Списываем баланс
         await db_update_balance(
             user_id, 
             -float(penalty_amount), 
@@ -333,6 +334,7 @@ async def db_apply_penalty(user_id, task_id, penalty_amount, channel_title):
             is_earned=True, 
             force=True
         )
+        # 2. ОЧЕНЬ ВАЖНО: Ставим флаг, что штраф уже наложен
         async with db_pool.acquire() as conn:
             await conn.execute(
                 "UPDATE subscriptions SET penalized = TRUE WHERE user_id = $1 AND task_id = $2",
