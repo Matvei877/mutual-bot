@@ -163,7 +163,7 @@ def register_advertise_handlers(dp: Dispatcher, bot: Bot):
                 "Вы можете отправить ссылку (@group) вручную.\n"
                 "<b>ИЛИ</b> нажмите кнопку ниже, чтобы выбрать группу и добавить туда бота автоматически."
             )
-            add_url = f"https://t.me/{bot_username}?startgroup&admin=invite_users+change_info"
+            add_url = f"https://t.me/{bot_username}?startgroup&admin=invite_users+change_info+delete_messages"
             kb_rows.append([InlineKeyboardButton(text="➕ Добавить бота в группу", url=add_url)])
             
         else: # channel
@@ -172,7 +172,7 @@ def register_advertise_handlers(dp: Dispatcher, bot: Bot):
                 "Вы можете отправить ссылку (@channel) вручную.\n"
                 "<b>ИЛИ</b> нажмите кнопку ниже, чтобы выбрать канал и добавить туда бота автоматически."
             )
-            add_url = f"https://t.me/{bot_username}?startchannel&admin=post_messages+edit_messages+invite_users"
+            add_url = f"https://t.me/{bot_username}?startchannel&admin=post_messages+edit_messages+invite_users+change_info"
             kb_rows.append([InlineKeyboardButton(text="➕ Добавить бота в канал", url=add_url)])
         
         if selected_type not in ['bot', 'view', 'reaction']:
