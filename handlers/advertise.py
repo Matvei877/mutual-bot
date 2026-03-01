@@ -150,7 +150,16 @@ def register_advertise_handlers(dp: Dispatcher, bot: Bot):
         if selected_type == 'view':
             msg = "👁️ <b>Реклама поста (Просмотры)</b>\n\nОтправьте ссылку на пост\n(например: <code>https://t.me/durov/123</code>)\n\n<b>ИЛИ просто перешлите сообщение из канала сюда.</b>"
         elif selected_type == 'reaction':
-            msg = "❤️ <b>Накрутка реакций</b>\n\nОтправьте ссылку на пост, где нужны реакции\n(например: <code>https://t.me/durov/123</code>)"
+            msg = (
+                "❤️ <b>Накрутка реакций</b>\n\n"
+                "1️⃣ Добавьте бота в канал/группу, где находится пост, через кнопки ниже.\n"
+                "2️⃣ Затем отправьте ссылку на пост, где нужны реакции\n"
+                "(например: <code>https://t.me/durov/123</code>)"
+            )
+            add_url_group = f"https://t.me/{bot_username}?startgroup&admin=invite_users+change_info+delete_messages"
+            add_url_channel = f"https://t.me/{bot_username}?startchannel&admin=post_messages+edit_messages+invite_users+change_info"
+            kb_rows.append([InlineKeyboardButton(text="➕ Добавить бота в группу", url=add_url_group)])
+            kb_rows.append([InlineKeyboardButton(text="➕ Добавить бота в канал", url=add_url_channel)])
         elif selected_type == 'bot':
             msg = (
                 "🤖 <b>Реклама бота</b>\n\n"
